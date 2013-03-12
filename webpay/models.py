@@ -3,7 +3,7 @@
 from django.db import models
 
 
-class OrdenCompra(models.Model):
+class OrdenCompraWebpay(models.Model):
     orden_compra = models.AutoField('id', primary_key=True)
     respuesta = models.CharField(max_length=2, blank=True)
     monto = models.PositiveIntegerField(default=0)
@@ -14,4 +14,4 @@ class OrdenCompra(models.Model):
     id_transaccion = models.CharField(max_length=80, blank=True)
 
     class Meta:
-        verbose_name = "Orden de compra"
+        verbose_name = "Orden de compra WebPay"
