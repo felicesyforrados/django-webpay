@@ -17,12 +17,30 @@ class WebPayNormalForm(forms.Form):
     TBK_URL_EXITO
     TBK_URL_FRACASO
     """
-    TBK_TIPO_TRANSACCION = forms.CharField(label='', widget = forms.TextInput(attrs={'readonly':'readonly','style':'display:none;'}))
-    TBK_MONTO = forms.CharField(label='', widget = forms.TextInput(attrs={'readonly':'readonly','style':'display:none;'}))
-    TBK_ORDEN_COMPRA = forms.CharField(label='', widget = forms.TextInput(attrs={'readonly':'readonly','style':'display:none;'}))
-    TBK_ID_SESION = forms.CharField(label='', widget = forms.TextInput(attrs={'readonly':'readonly','style':'display:none;'}))
-    TBK_URL_EXITO = forms.CharField(label='', widget = forms.TextInput(attrs={'readonly':'readonly','style':'display:none;'}))
-    TBK_URL_FRACASO = forms.CharField(label='', widget = forms.TextInput(attrs={'readonly':'readonly','style':'display:none;'}))
+    TBK_TIPO_TRANSACCION = forms.CharField(label='', widget = forms.TextInput(
+        attrs={'readonly':'readonly',
+            'style':'display:none;',
+            'id': 'TBK_TIPO_TRANSACCION'}))
+    TBK_MONTO = forms.CharField(label='', widget = forms.TextInput(
+        attrs={'readonly':'readonly',
+            'style':'display:none;',
+            'id': 'TBK_MONTO'}))
+    TBK_ORDEN_COMPRA = forms.CharField(label='', widget = forms.TextInput(
+        attrs={'readonly':'readonly',
+        'style':'display:none;',
+        'id': 'TBK_ORDEN_COMPRA'}))
+    TBK_ID_SESION = forms.CharField(label='', widget = forms.TextInput(
+        attrs={'readonly':'readonly',
+            'style':'display:none;',
+            'id': 'TBK_ID_SESION'}))
+    TBK_URL_EXITO = forms.CharField(label='', widget = forms.TextInput(
+        attrs={'readonly':'readonly',
+            'style':'display:none;',
+            'id': 'TBK_URL_EXITO'}))
+    TBK_URL_FRACASO = forms.CharField(label='', widget = forms.TextInput(
+        attrs={'readonly':'readonly',
+            'style':'display:none;',
+            'id': 'TBK_URL_FRACASO'}))
 
     def __init__(self, *args, **kwargs):
         super(WebPayNormalForm, self).__init__(*args, **kwargs)

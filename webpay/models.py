@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- codding: utf-8 -*-
 from django.db import models
-
+from webpay.signals import *
 
 class OrdenCompraWebpay(models.Model):
     orden_compra = models.AutoField('id', primary_key=True)
@@ -12,6 +12,13 @@ class OrdenCompraWebpay(models.Model):
     tipo_pago = models.CharField(max_length=80, blank=True)
     fecha_transaccion = models.DateTimeField()
     id_transaccion = models.CharField(max_length=80, blank=True)
+    status = models.CharField(max_length=80, blank=True)
+    codigo_transaccion = models.CharField(max_length=80, blank=True)
 
     class Meta:
         verbose_name = "Orden de compra WebPay"
+
+    def enviar_signals(self):
+        """Eniar un Signal para la app a la que se conecto y pueda
+        grabar en su propio Modelo"""
+        pago_fue_satisfactorio.send(sender = self)

@@ -1,6 +1,6 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'webpay.views',
-    url(r'^$', 'compra_webpay', name="webpay-normal"),
+    url(r'^$', 'compra_webpay', name="comprawebpay"),
 )
