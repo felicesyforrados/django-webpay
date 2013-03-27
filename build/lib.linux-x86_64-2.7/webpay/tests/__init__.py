@@ -1,1 +1,0 @@
-from test_view_webpay import *
