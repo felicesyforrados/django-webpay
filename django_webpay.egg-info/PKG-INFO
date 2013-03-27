@@ -1,0 +1,14 @@
+Metadata-Version: 1.1
+Name: django-webpay
+Version: 0.0.1
+Summary: Aplicación Django para integrar WebPay
+Home-page: https://github.com/felicesyforrados/django-webpay
+Author: FyF
+Author-email: dev@felicesyforrados.cl
+License: MIT license
+Description: UNKNOWN
+Platform: any
+Classifier: Framework :: Django
+Classifier: Environment :: Web Environment
+Classifier: Programming Language :: Python
+Classifier: Topic :: Utilities

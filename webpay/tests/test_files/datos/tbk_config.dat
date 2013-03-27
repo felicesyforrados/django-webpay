@@ -1,0 +1,16 @@
+IDCOMERCIO = 597026007976
+MEDCOM = 1
+TBK_KEY_ID = 101
+PARAMVERIFCOM = 1
+URLCGICOM = http://misael.beta.felicesyforrados.cl/core/pagos/cgi-bin/tbk_bp_resultado.cgi
+SERVERCOM = 76.74.252.222
+PORTCOM = 80
+WHITELISTCOM = ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789./:=&?_
+HOST =  76.74.252.222
+WPORT = 80
+URLCGITRA = /filtroUnificado/bp_revision.cgi
+URLCGIMEDTRA = /filtroUnificado/bp_validacion.cgi
+SERVERTRA = https://certificacion.webpay.cl
+PORTTRA = 6443
+PREFIJO_CONF_TR = HTML_
+HTML_TR_NORMAL = http://misael.beta.felicesyforrados.cl/core/pagos/webpay/compra/
