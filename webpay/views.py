@@ -12,7 +12,6 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from webpay.models import OrdenCompraWebpay
 from webpay.conf import *
-from webpay.utils import recupera_file, borra_file
 
 
 @require_POST
@@ -26,7 +25,7 @@ def compra_webpay(request):
     Validacion de monto.
     Validacion de orden de compra.
     """
-    success = False
+    resp = RECHAZADO_RESPONSE
     req = request
     qs = _get_order_params(req)
     orden_compra = req.POST.get('TBK_ORDEN_COMPRA')
@@ -36,40 +35,38 @@ def compra_webpay(request):
     id_transaccion = req.POST.get('TBK_ID_TRANSACCION')
     final_num_tarjeta = req.POST.get('TBK_FINAL_NUMERO_TARJETA')
     id_sesion = req.POST.get("TBK_ID_SESION")
+    tipo_pago = req.POST.get("TBK_TIPO_PAGO")
     #Comprueba archivo
     try:
-        dat = recupera_file(orden_compra, monto).split("&&")
-        dat_orden = dat[0]
-        dat_monto = dat[1]
-        borra_file(orden_compra, monto)
-    except IOError:
+        orden = OrdenCompraWebpay.objects.get(
+            orden_compra=orden_compra)
+        orden.id_transaccion = id_transaccion
+        orden.codigo_transaccion = respuesta
+        orden.codigo_autorizacion = codigo_autorizacion
+        orden.final_num_tarjeta = final_num_tarjeta
+        orden.id_sesion = id_sesion
+        orden.codigo_autorizacion = codigo_autorizacion
+        orden.fecha_transaccion = datetime.today()
+        orden.tipo_pago = tipo_pago
+    except OrdenCompraWebpay.DoesNotExist:
         raise
-    if orden_compra == dat_orden:
-        orden = OrdenCompraWebpay(
-            orden_compra=orden_compra,
-            fecha_transaccion=datetime.today())
-        if respuesta == "0":
-            print monto, dat_monto
-            if int(monto) == int(dat_monto):
-                #Valida MAC
-                if _valida_mac(qs) == VALID_MAC_RESPONSE:
-                    orden.id_transaccion = id_transaccion
-                    orden.codigo_transaccion = respuesta
-                    orden.codigo_autorizacion = codigo_autorizacion
-                    orden.final_num_tarjeta = final_num_tarjeta
-                    orden.id_sesion = id_sesion
-                    orden.codigo_autorizacion = codigo_autorizacion
-                    orden.status = "Pagado"
-                    success = True
-                else:
-                    orden.status = "MAC Invalido"
+    if respuesta == "0":
+        print monto, orden.monto
+        if int(monto) == int(orden.monto):
+            #Valida MAC
+            if _valida_mac(qs) == VALID_MAC_RESPONSE:
+                orden.status = STATUS["PAGADO"]
+                resp = ACEPTADO_RESPONSE
             else:
-                orden.status = "Monto Invalido"
+                orden.status = STATUS["MAC_INVALIDO"]
         else:
-            orden.status = "Invalido"
-        orden.save()
-        orden.enviar_signals()
-    return HttpResponse(ACEPTADO_RESPONSE) if success else HttpResponse(RECHAZADO_RESPONSE)
+            orden.status = STATUS["MONTO_INVALIDO"]
+    else:
+        orden.status = STATUS["RESP_INVALIDO"]
+    orden.respuesta = resp
+    orden.save()
+    orden.enviar_signals()
+    return HttpResponse(resp)
 
 def _valida_mac(qs):
     """Funcion que validara la MAC que viene de resultado.cgi. Se debe generar
@@ -85,7 +82,7 @@ def _valida_mac(qs):
         "temp_path": temp_path
     }
     valid_mac = commands.getoutput(command).strip() == VALID_MAC_RESPONSE
-    #print commands.getoutput(command).strip()
+    # print commands.getoutput(command).strip()
     os.remove(temp_path)
     return VALID_MAC_RESPONSE if valid_mac else RECHAZADO_RESPONSE
 

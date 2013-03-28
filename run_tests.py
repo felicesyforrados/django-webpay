@@ -7,7 +7,6 @@ DIRNAME = os.path.dirname(__file__)
 settings.configure(
     DEBUG=True,
     URL_CGI_VALIDA_MAC="webpay/tests/test_files/tbk_check_mac.cgi",
-    FOLDER_DATA_LOG = "webpay/orden_logs",
     DATABASES={
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',}

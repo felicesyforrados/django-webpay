@@ -15,5 +15,12 @@ TRANSACTION_CODES = {
     '-5': ('Rechazo por error de tasa.'),
     '-6': ('Excede cupo maximo mensual.'),
     '-7': ('Excede limite diario de transaccion.'),
-    '-8': ('Rubro no autorizado.')
+    '-8': ('Rubro no autorizado.')}
+
+#Estatus
+STATUS = {
+    "PAGADO": "Pagado",
+    "MONTO_INVALIDO": "Monto Invalido",
+    "MAC_INVALIDO": "MAC Invalido",
+    "RESP_INVALIDO": "Invalido"
 }

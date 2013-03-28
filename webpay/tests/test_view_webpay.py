@@ -4,8 +4,8 @@ import os
 from django.test import TestCase
 from django.test.client import Client
 from webpay.models import OrdenCompraWebpay
-from webpay.utils import crea_tmp_file
 from webpay.conf import RECHAZADO_RESPONSE
+from webpay.signals import *
 
 WEBPAY_PARAMS = {
     "TBK_ORDEN_COMPRA": "fyf_1364257085_79764",
@@ -31,19 +31,20 @@ class WebpayTest(TestCase):
     def setUp(self):
         self.params = WEBPAY_PARAMS.copy()
 
-    def test_no_archivo(self):
+    def test_no_registro(self):
         #Archivo no existe
         params = self.params
-        with self.assertRaises(IOError):
+        with self.assertRaises(OrdenCompraWebpay.DoesNotExist):
             response = self.client.post("/", params)
 
     def test_respuesta(self):
         #Crear Archivo Respuesta != 0
-        crea_tmp_file(
-            WEBPAY_PARAMS["TBK_ORDEN_COMPRA"],
-            WEBPAY_PARAMS["TBK_MONTO"])
         params = self.params
         params["TBK_RESPUESTA"] = "8"
+        ord_m = OrdenCompraWebpay(
+            orden_compra=params["TBK_ORDEN_COMPRA"],
+            monto=int(params["TBK_MONTO"])/100)
+        ord_m.save()
         response = self.client.post("/", params)
         for i in response:
             self.assertEqual(i, RECHAZADO_RESPONSE)
@@ -51,12 +52,13 @@ class WebpayTest(TestCase):
         self.assertEqual(orden[0].status, "Invalido")
 
     def test_monto(self):
-        crea_tmp_file(
-            WEBPAY_PARAMS["TBK_ORDEN_COMPRA"],
-            WEBPAY_PARAMS["TBK_MONTO"])
         #Validar monto diferente
         params = self.params
         params["TBK_MONTO"] = "800"
+        ord_m = OrdenCompraWebpay(
+            orden_compra=params["TBK_ORDEN_COMPRA"],
+            monto=int(WEBPAY_PARAMS["TBK_MONTO"])/100)
+        ord_m.save()
         response = self.client.post("/", params)
         for i in response:
             self.assertEqual(i, RECHAZADO_RESPONSE)
@@ -64,12 +66,13 @@ class WebpayTest(TestCase):
         self.assertEqual(orden[0].status, "Monto Invalido")
 
     def test_mac(self):
-        crea_tmp_file(
-            WEBPAY_PARAMS["TBK_ORDEN_COMPRA"],
-            WEBPAY_PARAMS["TBK_MONTO"])
         #Validar MAC invalido
         params = self.params
         params["TBK_MAC"] = "8321321321"
+        ord_m = OrdenCompraWebpay(
+            orden_compra=params["TBK_ORDEN_COMPRA"],
+            monto=int(params["TBK_MONTO"])/100)
+        ord_m.save()
         response = self.client.post("/", params)
         for i in response:
             self.assertEqual(i, RECHAZADO_RESPONSE)
@@ -77,8 +80,9 @@ class WebpayTest(TestCase):
         self.assertEqual(orden[0].status, "MAC Invalido")
 
     def test_ok(self):
-        crea_tmp_file(
-            WEBPAY_PARAMS["TBK_ORDEN_COMPRA"],
-            WEBPAY_PARAMS["TBK_MONTO"])
         params = self.params
+        ord_m = OrdenCompraWebpay(
+            orden_compra=params["TBK_ORDEN_COMPRA"],
+            monto=int(params["TBK_MONTO"])/100)
+        ord_m.save()
         response = self.client.post("/", params)

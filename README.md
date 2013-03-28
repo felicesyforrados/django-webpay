@@ -12,3 +12,5 @@ Agregar url incluyendo webpay
 
 url(r'^webpay/compra/$', include('webpay.urls')),
 
+Crear Tablas
+python manage.py schemamigration webpay --initial
