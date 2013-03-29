@@ -86,3 +86,4 @@ class WebpayTest(TestCase):
             monto=int(params["TBK_MONTO"])/100)
         ord_m.save()
         response = self.client.post("/", params)
+

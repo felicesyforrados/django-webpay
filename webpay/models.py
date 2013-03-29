@@ -16,6 +16,8 @@ class OrdenCompraWebpay(models.Model):
     status = models.CharField(max_length=80, blank=True)
     codigo_transaccion = models.CharField(max_length=80, blank=True)
     id_sesion = models.CharField(max_length=80, blank=True)
+    tipo_transaccion = models.CharField(max_length=30, blank=True)
+    fecha_contable = models.CharField(max_length=20, blank=True)
 
     class Meta:
         verbose_name = "Orden de compra WebPay"

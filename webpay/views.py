@@ -36,6 +36,8 @@ def compra_webpay(request):
     final_num_tarjeta = req.POST.get('TBK_FINAL_NUMERO_TARJETA')
     id_sesion = req.POST.get("TBK_ID_SESION")
     tipo_pago = req.POST.get("TBK_TIPO_PAGO")
+    tipo_transaccion = req.POST.get("TBK_TIPO_TRANSACCION")
+    fecha_contable = req.POST.get("TBK_FECHA_CONTABLE")
     #Comprueba archivo
     try:
         orden = OrdenCompraWebpay.objects.get(
@@ -48,6 +50,8 @@ def compra_webpay(request):
         orden.codigo_autorizacion = codigo_autorizacion
         orden.fecha_transaccion = datetime.today()
         orden.tipo_pago = tipo_pago
+        orden.tipo_transaccion = tipo_transaccion
+        orden.fecha_contable = fecha_contable
     except OrdenCompraWebpay.DoesNotExist:
         raise
     if respuesta == "0":
@@ -82,12 +86,10 @@ def _valida_mac(qs):
         "temp_path": temp_path
     }
     valid_mac = commands.getoutput(command).strip() == VALID_MAC_RESPONSE
-    # print commands.getoutput(command).strip()
+    print commands.getoutput(command).strip()
     os.remove(temp_path)
     return VALID_MAC_RESPONSE if valid_mac else RECHAZADO_RESPONSE
 
 def _get_order_params(req):
     """Ordenar los parametros recibidos, separados con &"""
-    # varform = "TBK_ORDEN_COMPRA="+req.POST["TBK_ORDEN_COMPRA"]+"&"+"TBK_TIPO_TRANSACCION="+req.POST["TBK_TIPO_TRANSACCION"]+"&"+"TBK_RESPUESTA="+req.POST["TBK_RESPUESTA"]+"&"+"TBK_MONTO="+req.POST["TBK_MONTO"]+"&"+"TBK_CODIGO_AUTORIZACION="+req.POST["TBK_CODIGO_AUTORIZACION"]+"&"+"TBK_FINAL_NUMERO_TARJETA="+req.POST["TBK_FINAL_NUMERO_TARJETA"]+"&"+"TBK_FECHA_CONTABLE="+req.POST["TBK_FECHA_CONTABLE"]+"&"+"TBK_FECHA_TRANSACCION="+req.POST["TBK_FECHA_TRANSACCION"]+"&"+"TBK_HORA_TRANSACCION="+req.POST["TBK_HORA_TRANSACCION"]+"&"+"TBK_ID_SESION="+req.POST["TBK_ID_SESION"]+"&"+"TBK_ID_TRANSACCION="+req.POST["TBK_ID_TRANSACCION"]+"&"+"TBK_TIPO_PAGO="+req.POST["TBK_TIPO_PAGO"]+"&"+"TBK_NUMERO_CUOTAS="+req.POST["TBK_NUMERO_CUOTAS"]+"&"+"TBK_TASA_INTERES_MAX="+req.POST["TBK_TASA_INTERES_MAX"]+"&"+"TBK_VCI="+req.POST["TBK_VCI"]+"&"+"TBK_MAC="+req.POST["TBK_MAC"]
-    # return varform
     return '&'.join(['%s=%s' % (k,v) for k,v in cgi.parse_qsl(req.body)])
