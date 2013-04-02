@@ -42,8 +42,10 @@ class WebPayNormalForm(forms.Form):
             'style':'display:none;',
             'id': 'TBK_URL_FRACASO'}))
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, type_submit=None, action_form = None, *args, **kwargs):
         super(WebPayNormalForm, self).__init__(*args, **kwargs)
+        self.type_submit = type_submit
+        self.action_form = action_form
 
     def render(self):
-        return mark_safe(u"""<form action="%s" method="POST">%s<input type="image" src="%s" border="0" name="submit" width='200' height='140'></form>""" % (settings.URL_CGI_PAGO, self, settings.URL_IMG_BTN_WEBPAY))
+        return mark_safe(u"""<form action="%s" method="POST" id="form_webpay">%s %s</form>""" % (self.action_form, self, self.type_submit))
