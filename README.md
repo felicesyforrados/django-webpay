@@ -127,7 +127,7 @@ modelo si es que lo requiere el usuario.
                 {{form.render}}
             {% endif %}
 
-2. Crear vistas de exito fracaso y especificarlas en el archivo de configuracion de Webpay
+2. Crear vistas de exito fracaso y especificarlas en el archivo de configuracion de Webpay asi como en el settings.py
 
 3. Se lo requiere el usuario, se puede escuchar el signal enviado por django-webpay, los singals son
 
