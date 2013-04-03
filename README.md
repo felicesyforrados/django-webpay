@@ -86,10 +86,62 @@ Uso
 ===
 
 La dinámica básica con Webpay es primero armar un formulario el cual contiene los parametros que se le enviaran al CGI 
-y Webpay los pueda procesar, después Webpay tomara el control del navegador y pedira los datos del tarjetahabiente, 
+y Webpay los pueda procesar así mismo generar un registro en el modelo para su posterior comprobación, 
+después Webpay tomara el control del navegador y pedira los datos del tarjetahabiente, 
 Webpay es quien validara el número de la tarejta y el código, cuando todo este correcto mandara a llamar una
 vista la cual es la que validara los datos entregados por Webpay, al estar todo correcto se guardara un registro 
 en el modelo OrdenCompraWebpay y se enviara un Signal el cual se puede hacer uso para guardar los datos en otro
 modelo si es que lo requiere el usuario.
+
+1. Agregar formulario a la vista y guardar el registro en OrdenCompraWebpay
+
+        # views.py
+        #Vista principal para la compra en Webpay
+        from webpay.forms import WebPayNormalForm
+        from webpay.conf import *
+        from webpay.models import OrdenCompraWebpay
+        ord_compra = "numaleatorio"
+        montof = 12000 * 100
+        #El parametro initial se mandara todos los parametros para armar el formulario. El parametro type_submit ayudara
+        #a armar la imagen, en este caso es un submit con la leyenda Realizar pedido
+        form = WebPayNormalForm(
+            initial={
+                'TBK_TIPO_TRANSACCION': settings.TBK_TIPO_TRANSACCION,
+                'TBK_MONTO': montof,
+                'TBK_ORDEN_COMPRA': ord_compra,
+                'TBK_ID_SESION': "num_usuario",
+                'TBK_URL_EXITO': settings.TBK_URL_EXITO,
+                'TBK_URL_FRACASO': settings.TBK_URL_FRACASO},
+            type_submit="<input type='submit' class='button alt' id='place_order' value='Realizar el pedido' disabled>",
+            action_form=settings.URL_CGI_PAGO)
+        try:
+            ord_m = OrdenCompraWebpay(orden_compra=ord_compra, monto=int(montof)/100)
+            ord_m.save()
+        except Exception, e:
+            print "Error"
+        return render(request, '/vista_pago_webpay.html', {"form":form})
+
+    ° Template /vista_pago_webpay.html
+    
+            {% if form %}
+                {{form.render}}
+            {% endif %}
+
+2. Crear vistas de exito fracaso y especificarlas en el archivo de configuracion de Webpay
+
+3. Se lo requiere el usuario, se puede escuchar el signal enviado por django-webpay, los singals son
+
+        °pago_fue_satisfactorio
+        °respuesta_invalida
+        °monto_invalido
+        °mac_invalido
+
+    ° El signal se puede escuchar de la siguiente manera
+
+        #app/signals.py
+        from webpay.signals import pago_fue_satisfactorio, respuesta_invalida, monto_invalido, mac_invalido
+        @receiver(pago_fue_satisfactorio)
+        def webpay_handler(sender, **kwargs):
+            objeto_odern_compra_webpay = sender
 
 
