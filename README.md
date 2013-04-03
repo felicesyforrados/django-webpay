@@ -144,4 +144,14 @@ modelo si es que lo requiere el usuario.
         def webpay_handler(sender, **kwargs):
             objeto_odern_compra_webpay = sender
 
+Links
+=====
+
+1. [Transbank KCC](https://www.transbank.cl/public/16_productos_y_servicios.html)
+
+Contácto
+========
+
+dev@felicesyforrados.cl
+
 
