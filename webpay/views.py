@@ -13,7 +13,6 @@ from django.views.decorators.csrf import csrf_exempt
 from webpay.models import OrdenCompraWebpay
 from webpay.conf import *
 
-
 @require_POST
 @csrf_exempt
 def compra_webpay(request):
@@ -58,7 +57,7 @@ def compra_webpay(request):
         print monto, orden.monto
         if int(monto) == int(orden.monto):
             #Valida MAC
-            if _valida_mac(qs) == VALID_MAC_RESPONSE:
+            if valida_mac(qs) == VALID_MAC_RESPONSE:
                 orden.status = STATUS["PAGADO"]
                 resp = ACEPTADO_RESPONSE
             else:
@@ -72,7 +71,7 @@ def compra_webpay(request):
     orden.enviar_signals()
     return HttpResponse(resp)
 
-def _valida_mac(qs):
+def valida_mac(qs):
     """Funcion que validara la MAC que viene de resultado.cgi. Se debe generar
     un archivo de texto con los parametros recibidos en el formato en el que
     llegan, entregar la ubicacion del archivo
