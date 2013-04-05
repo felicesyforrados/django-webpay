@@ -14,3 +14,6 @@ monto_invalido = Signal()
 
 #Mac invalido
 mac_invalido = Signal()
+
+#Pago defectuoso
+pago_defectuoso = Signal()

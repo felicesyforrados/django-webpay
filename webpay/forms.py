@@ -48,4 +48,4 @@ class WebPayNormalForm(forms.Form):
         self.action_form = action_form
 
     def render(self):
-        return mark_safe(u"""<form action="%s" method="POST" id="form_webpay">%s %s</form>""" % (self.action_form, self, self.type_submit))
+        return mark_safe(u"""<form action="%s" method="POST" id="form_webpay"> %s %s</form>""" % (self.action_form, self, self.type_submit))

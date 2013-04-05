@@ -12,6 +12,7 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from webpay.models import OrdenCompraWebpay
 from webpay.conf import *
+from webpay.signals import pago_defectuoso
 
 @require_POST
 @csrf_exempt
@@ -37,6 +38,7 @@ def compra_webpay(request):
     tipo_pago = req.POST.get("TBK_TIPO_PAGO")
     tipo_transaccion = req.POST.get("TBK_TIPO_TRANSACCION")
     fecha_contable = req.POST.get("TBK_FECHA_CONTABLE")
+    numero_cuota = req.POST.get("TBK_NUMERO_CUOTAS")
     #Comprueba archivo
     try:
         orden = OrdenCompraWebpay.objects.get(
@@ -51,10 +53,12 @@ def compra_webpay(request):
         orden.tipo_pago = tipo_pago
         orden.tipo_transaccion = tipo_transaccion
         orden.fecha_contable = fecha_contable
+        orden.numero_cuota = numero_cuota
     except OrdenCompraWebpay.DoesNotExist:
+        data = [orden_compra, get_client_ip(req)]
+        pago_defectuoso.send(sender=data)
         raise
     if respuesta == "0":
-        print monto, orden.monto
         if int(monto) == int(orden.monto):
             #Valida MAC
             if valida_mac(qs) == VALID_MAC_RESPONSE:
@@ -85,10 +89,17 @@ def valida_mac(qs):
         "temp_path": temp_path
     }
     valid_mac = commands.getoutput(command).strip() == VALID_MAC_RESPONSE
-    print commands.getoutput(command).strip()
     os.remove(temp_path)
     return VALID_MAC_RESPONSE if valid_mac else RECHAZADO_RESPONSE
 
 def _get_order_params(req):
     """Ordenar los parametros recibidos, separados con &"""
     return '&'.join(['%s=%s' % (k,v) for k,v in cgi.parse_qsl(req.body)])
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
