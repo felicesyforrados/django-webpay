@@ -30,7 +30,7 @@ class WebpayTest(TestCase):
         for i in response:
             self.assertEqual(i, RECHAZADO_RESPONSE)
         orden = OrdenCompraWebpay.objects.all()
-        self.assertEqual(orden[0].status, "Invalido")
+        self.assertEqual(orden[0].status, u"Inválido")
 
     def test_monto(self):
         #Validar monto diferente
@@ -43,7 +43,7 @@ class WebpayTest(TestCase):
         for i in response:
             self.assertEqual(i, RECHAZADO_RESPONSE)
         orden = OrdenCompraWebpay.objects.all()
-        self.assertEqual(orden[0].status, "Monto Invalido")
+        self.assertEqual(orden[0].status, u"Monto Inválido")
 
     def test_function_mac(self):
         #Validar funcion MAC
@@ -60,7 +60,7 @@ class WebpayTest(TestCase):
         for i in response:
             self.assertEqual(i, RECHAZADO_RESPONSE)
         orden = OrdenCompraWebpay.objects.all()
-        self.assertEqual(orden[0].status, "MAC Invalido")
+        self.assertEqual(orden[0].status, u"MAC Inválido")
 
     def test_ok(self):
         ord_m = OrdenCompraWebpay(

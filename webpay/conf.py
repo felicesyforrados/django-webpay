@@ -1,4 +1,4 @@
-#-*- codding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
 #Response
 ACEPTADO_RESPONSE = 'ACEPTADO'
@@ -20,7 +20,7 @@ TRANSACTION_CODES = {
 #Estatus
 STATUS = {
     "PAGADO": "Pagado",
-    "MONTO_INVALIDO": "Monto Invalido",
-    "MAC_INVALIDO": "MAC Invalido",
-    "RESP_INVALIDO": "Invalido"
+    "MONTO_INVALIDO": "Monto Inválido",
+    "MAC_INVALIDO": "MAC Inválido",
+    "RESP_INVALIDO": "Inválido"
 }
