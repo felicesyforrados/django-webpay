@@ -8,7 +8,7 @@ class OrdenCompraWebpay(models.Model):
     orden_compra = models.CharField(max_length=42, unique=True)
     respuesta = models.CharField(max_length=30, blank=True)
     monto = models.PositiveIntegerField(default=0)
-    codigo_autorizacion = models.CharField(max_length=6, blank=True)
+    codigo_autorizacion = models.CharField(max_length=8, blank=True)
     final_num_tarjeta = models.CharField(max_length=4, blank=True)
     tipo_pago = models.CharField(max_length=80, blank=True)
     fecha_transaccion = models.DateTimeField(blank=True, null=True)
