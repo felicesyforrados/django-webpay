@@ -41,7 +41,8 @@ def compra_webpay(request):
         #Comprueba archivo
         try:
             orden = OrdenCompraWebpay.objects.get(
-                orden_compra=orden_compra)
+                orden_compra=orden_compra,
+                fecha_transaccion=None)
             orden.id_transaccion = id_transaccion
             orden.codigo_transaccion = respuesta
             orden.codigo_autorizacion = codigo_autorizacion
@@ -56,7 +57,7 @@ def compra_webpay(request):
         except OrdenCompraWebpay.DoesNotExist:
             data = [orden_compra, get_client_ip(req)]
             pago_defectuoso.send(sender=data)
-            raise
+            return HttpResponse(resp)
         if respuesta == "0":
             if int(monto) == int(orden.monto):
                 #Valida MAC
