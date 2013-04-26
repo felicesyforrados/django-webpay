@@ -16,8 +16,8 @@ class WebpayTest(TestCase):
 
     def test_no_registro(self):
         #Archivo no existe
-        with self.assertRaises(OrdenCompraWebpay.DoesNotExist):
-            response = self.client.post("/", self.WEBPAY_PARAMS, content_type="text/html")
+        response = self.client.post("/", self.WEBPAY_PARAMS, content_type="text/html")
+        self.assertEqual(response.content, RECHAZADO_RESPONSE)
 
     def test_respuesta(self):
         #Crear Archivo Respuesta != 0
