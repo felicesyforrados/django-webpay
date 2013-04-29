@@ -44,6 +44,17 @@ class WebpayTest(TestCase):
             self.assertEqual(i, RECHAZADO_RESPONSE)
         orden = OrdenCompraWebpay.objects.all()
         self.assertEqual(orden[0].status, u"Monto Inválido")
+        #Monto como string
+        params = "TBK_ORDEN_COMPRA=fyf_1365025481_1mh1&TBK_TIPO_TRANSACCION=TR_NORMAL&TBK_RESPUESTA=0&TBK_MONTO=1d20&TBK_CODIGO_AUTORIZACION=101996&TBK_FINAL_NUMERO_TARJETA=6623&TBK_FECHA_CONTABLE=0403&TBK_FECHA_TRANSACCION=0403&TBK_HORA_TRANSACCION=191700&TBK_ID_SESION=fyf_1mh1&TBK_ID_TRANSACCION=5025486392&TBK_TIPO_PAGO=VN&TBK_NUMERO_CUOTAS=0&TBK_VCI=TSY&TBK_MAC=1d776"
+        ord_m = OrdenCompraWebpay(
+            orden_compra="fyf_1365025481_1mh1",
+            monto='12000')
+        ord_m.save()
+        response = self.client.post("/", params, content_type="text/html")
+        for i in response:
+            self.assertEqual(i, RECHAZADO_RESPONSE)
+        orden = OrdenCompraWebpay.objects.all()
+        self.assertEqual(orden[0].status, u"Monto Inválido")
 
     def test_function_mac(self):
         #Validar funcion MAC

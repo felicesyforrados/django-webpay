@@ -29,7 +29,10 @@ def compra_webpay(request):
         qs = _get_order_params(req)
         orden_compra = req.POST.get('TBK_ORDEN_COMPRA')
         respuesta = req.POST.get('TBK_RESPUESTA')
-        monto = int(req.POST.get('TBK_MONTO')) / 100
+        try:
+            monto = int(req.POST.get('TBK_MONTO')) / 100
+        except:
+            monto = req.POST.get("TBK_MONTO")
         codigo_autorizacion = req.POST.get('TBK_CODIGO_AUTORIZACION')
         id_transaccion = req.POST.get('TBK_ID_TRANSACCION')
         final_num_tarjeta = req.POST.get('TBK_FINAL_NUMERO_TARJETA')
@@ -59,7 +62,7 @@ def compra_webpay(request):
             pago_defectuoso.send(sender=data)
             return HttpResponse(resp)
         if respuesta == "0":
-            if int(monto) == int(orden.monto):
+            if monto == int(orden.monto):
                 #Valida MAC
                 if valida_mac(qs) == VALID_MAC_RESPONSE:
                     orden.status = STATUS["PAGADO"]
