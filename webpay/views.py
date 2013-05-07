@@ -73,6 +73,7 @@ def compra_webpay(request):
                 orden.status = STATUS["MONTO_INVALIDO"]
         else:
             orden.status = STATUS["RESP_INVALIDO"]
+            resp = ACEPTADO_RESPONSE
         orden.respuesta = resp
         orden.save()
         orden.enviar_signals()

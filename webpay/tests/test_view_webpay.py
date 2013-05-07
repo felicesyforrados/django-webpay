@@ -28,7 +28,7 @@ class WebpayTest(TestCase):
         ord_m.save()
         response = self.client.post("/", params, content_type="text/html")
         for i in response:
-            self.assertEqual(i, RECHAZADO_RESPONSE)
+            self.assertEqual(i, ACEPTADO_RESPONSE)
         orden = OrdenCompraWebpay.objects.all()
         self.assertEqual(orden[0].status, u"Inválido")
 
