@@ -3,8 +3,6 @@
 import os
 from django.test import TestCase
 from django.test.client import Client
-from django.contrib.auth.models import User
-from django.conf import settings
 from webpay.models import OrdenCompraWebpay
 from webpay.conf import RECHAZADO_RESPONSE, VALID_MAC_RESPONSE, ACEPTADO_RESPONSE
 from webpay.signals import *
