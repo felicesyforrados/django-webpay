@@ -22,5 +22,6 @@ STATUS = {
     "PAGADO": "Pagado",
     "MONTO_INVALIDO": "Monto Inválido",
     "MAC_INVALIDO": "MAC Inválido",
-    "RESP_INVALIDO": "Inválido"
+    "RESP_INVALIDO": "Inválido",
+    "ERROR_OK": "error_ok"
 }
