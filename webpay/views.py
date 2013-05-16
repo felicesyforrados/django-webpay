@@ -30,6 +30,7 @@ def compra_webpay(request):
         orden_compra = req.POST.get('TBK_ORDEN_COMPRA')
         respuesta = req.POST.get('TBK_RESPUESTA')
         try:
+            #Divide para tener la cifra correcta desde Webpay
             monto = int(req.POST.get('TBK_MONTO')) / 100
         except:
             monto = req.POST.get("TBK_MONTO")
