@@ -47,7 +47,7 @@ def compra_webpay(request):
         fecha_contable = req.POST.get("TBK_FECHA_CONTABLE")
         numero_cuota = req.POST.get("TBK_NUMERO_CUOTAS")
         #Comprueba archivo
-        logger_webpay.info("Data post {}").format(req.POST)
+        logger_webpay.info("Data post {}".format(req.POST))
         mail_admins(
             subject="Django webpay views",
             message="Orde de compra {} Session {}".format(orden_compra, id_sesion),
