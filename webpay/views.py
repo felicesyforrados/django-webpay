@@ -4,6 +4,8 @@ import os
 import cgi
 import commands
 import tempfile
+import logging
+from django.core.mail import mail_admins
 from datetime import datetime
 from django.conf import settings
 from django.http import HttpResponse
@@ -13,6 +15,7 @@ from webpay.models import OrdenCompraWebpay
 from webpay.conf import *
 from webpay.signals import pago_defectuoso
 
+logger_webpay = logging.getLogger('felicesyforrados.webpay')
 
 @csrf_exempt
 def compra_webpay(request):
@@ -61,6 +64,12 @@ def compra_webpay(request):
         except OrdenCompraWebpay.DoesNotExist:
             data = [orden_compra, get_client_ip(req)]
             pago_defectuoso.send(sender=data)
+            #Comprueba archivo
+            logger_webpay.info("Data post {}".format(req.POST))
+            mail_admins(
+                subject="Django webpay views",
+                message="Orde de compra {}".format(req.POST),
+-            fail_silently=False)
             return HttpResponse(resp)
         if respuesta == "0":
             if monto == int(orden.monto):
