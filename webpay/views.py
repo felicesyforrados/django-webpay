@@ -69,7 +69,7 @@ def compra_webpay(request):
             mail_admins(
                 subject="Django webpay views",
                 message="Orde de compra {}".format(req.POST),
--            fail_silently=False)
+                fail_silently=False)
             return HttpResponse(resp)
         if respuesta == "0":
             if monto == int(orden.monto):
