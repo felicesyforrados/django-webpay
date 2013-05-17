@@ -4,6 +4,8 @@ import os
 import cgi
 import commands
 import tempfile
+import logging
+from django.core.mail import mail_admins
 from datetime import datetime
 from django.conf import settings
 from django.http import HttpResponse
@@ -12,6 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 from webpay.models import OrdenCompraWebpay
 from webpay.conf import *
 from webpay.signals import pago_defectuoso
+
+logger_webpay = logging.getLogger('felicesyforrados.webpay')
 
 @csrf_exempt
 def compra_webpay(request):
@@ -43,6 +47,11 @@ def compra_webpay(request):
         fecha_contable = req.POST.get("TBK_FECHA_CONTABLE")
         numero_cuota = req.POST.get("TBK_NUMERO_CUOTAS")
         #Comprueba archivo
+        logger_webpay.info("Data post {}").format(req.POST)
+        mail_admins(
+            subject="Django webpay views",
+            message="Orde de compra {} Session {}".format(orden_compra, id_sesion),
+            fail_silently=False)
         try:
             orden = OrdenCompraWebpay.objects.get(
                 orden_compra=orden_compra,
