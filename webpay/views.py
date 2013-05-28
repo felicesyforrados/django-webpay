@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from webpay.models import OrdenCompraWebpay
-from webpay.conf import *
+from webpay.conf import STATUS, VALID_MAC_RESPONSE, ACEPTADO_RESPONSE, RECHAZADO_RESPONSE
 from webpay.signals import pago_defectuoso
 
 logger_webpay = logging.getLogger('felicesyforrados.webpay')

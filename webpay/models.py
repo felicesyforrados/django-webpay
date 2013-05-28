@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- codding: utf-8 -*-
 from django.db import models
-from webpay.signals import *
-from webpay.conf import *
+from webpay.signals import pago_fue_satisfactorio, respuesta_invalida, monto_invalido, mac_invalido
+from webpay.conf import STATUS
 
 class OrdenCompraWebpay(models.Model):
     orden_compra = models.CharField(max_length=42, unique=True)
