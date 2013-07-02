@@ -38,3 +38,9 @@ class OrdenCompraWebpay(models.Model):
         elif self.status == STATUS["MAC_INVALIDO"]:
             #Mac invalido
             mac_invalido.send(sender=self)
+
+    def __unicode__(self):
+        if self.tipo_pago == 'VN' or self.tipo_pago == 'VD':
+            return "<Webpay Contado: {}>".format(self.orden_compra)
+        else:
+            return "<Webpay Cuotas: {}>".format(self.orden_compra)
