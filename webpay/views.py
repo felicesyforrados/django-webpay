@@ -28,6 +28,7 @@ def compra_webpay(request):
     Validacion de orden de compra.
     """
     resp = RECHAZADO_RESPONSE
+    logger_webpay.info("Data POST {}".format(request.POST))
     if request.method == "POST":
         req = request
         qs = _get_order_params(req)
