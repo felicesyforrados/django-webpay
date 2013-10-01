@@ -13,8 +13,6 @@ class WebPayNormalForm(forms.Form):
     TBK_TIPO_TRANSACCION
     TBK_MONTO
     TBK_ORDEN_COMPRA
-    PRE_TBK_MONTO
-    PRE_TBK_ORDEN_COMPRA
     TBK_ID_SESION
     TBK_URL_EXITO
     TBK_URL_FRACASO
@@ -31,14 +29,6 @@ class WebPayNormalForm(forms.Form):
         attrs={'readonly':'readonly',
         'style':'display:none;',
         'id': 'TBK_ORDEN_COMPRA'}))
-    PRE_TBK_MONTO = forms.CharField(label='', widget = forms.TextInput(
-        attrs={'readonly':'readonly',
-            'style':'display:none;',
-            'id': 'PRE_TBK_MONTO'}))
-    PRE_TBK_ORDEN_COMPRA = forms.CharField(label='', widget = forms.TextInput(
-        attrs={'readonly':'readonly',
-        'style':'display:none;',
-        'id': 'PRE_TBK_ORDEN_COMPRA'}))
     TBK_ID_SESION = forms.CharField(label='', widget = forms.TextInput(
         attrs={'readonly':'readonly',
             'style':'display:none;',
