@@ -4,6 +4,7 @@ import os
 import cgi
 import commands
 import tempfile
+import time
 import logging
 from django.core.mail import mail_admins
 from datetime import datetime
@@ -29,6 +30,7 @@ def compra_webpay(request):
     """
     resp = RECHAZADO_RESPONSE
     if request.method == "POST":
+        startTime = time.time()  # Revisaremos Tiempo
         req = request
         qs = _get_order_params(req)
         orden_compra = req.POST.get('TBK_ORDEN_COMPRA')
@@ -87,6 +89,7 @@ def compra_webpay(request):
         orden.respuesta = resp
         orden.save()
         orden.enviar_signals()
+        logger_webpay.info("Request webpay/compra/ duro {} segundos.".format(time.time()-startTime))
         return HttpResponse(resp)
     else:
         return HttpResponse(resp)
