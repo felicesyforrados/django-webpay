@@ -89,7 +89,7 @@ def compra_webpay(request):
         orden.respuesta = resp
         orden.save()
         orden.enviar_signals()
-        logger_webpay.info("Request webpay/compra/ duro {} segundos.".format(time.time()-startTime))
+        logger_webpay.info("Request de {} webpay/compra/ duro {} segundos.".format(orden_compra, time.time()-startTime))
         return HttpResponse(resp)
     else:
         return HttpResponse(resp)
