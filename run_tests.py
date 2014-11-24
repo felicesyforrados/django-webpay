@@ -17,7 +17,8 @@ settings.configure(
                     'django.contrib.sessions',
                     'django.contrib.admin',
                     'webpay',
-                    'webpay.tests'))
+                    'webpay.tests'),
+    LOGGER_WEBPAY='logger_webpay')
 
 from django.test.simple import DjangoTestSuiteRunner
 

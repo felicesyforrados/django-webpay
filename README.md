@@ -67,6 +67,11 @@ Configuración
         # settings.py
         URL_CGI_VALIDA_MAC = '/cgi-bin/tbk_check_mac.cgi'
 
+    °Logger de Webpay. Es el nombre del log con que se identificara para guardar informacion.
+
+        # settings.py
+        LOGGER_WEBPAY = 'loggerapp.django'
+
 3. Agregar app a settings.py
 
         #settings.py

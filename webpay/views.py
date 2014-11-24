@@ -10,13 +10,16 @@ from django.core.mail import mail_admins
 from datetime import datetime
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from webpay.models import OrdenCompraWebpay
 from webpay.conf import STATUS, VALID_MAC_RESPONSE, ACEPTADO_RESPONSE, RECHAZADO_RESPONSE
 from webpay.signals import pago_defectuoso
 
-logger_webpay = logging.getLogger('felicesyforrados.webpay')
+if hasattr(settings, 'LOGGER_WEBPAY'):
+    logger_webpay = logging.getLogger(settings.LOGGER_WEBPAY)
+else:
+    logger_webpay = logging.getLogger('debug.log')
+
 
 @csrf_exempt
 def compra_webpay(request):
