@@ -97,6 +97,7 @@ def compra_webpay(request):
     else:
         return HttpResponse(resp)
 
+
 def valida_mac(qs):
     """Funcion que validara la MAC que viene de resultado.cgi. Se debe generar
     un archivo de texto con los parametros recibidos en el formato en el que
@@ -107,16 +108,18 @@ def valida_mac(qs):
     f.write(qs)
     f.close()
     command = "%(mac)s %(temp_path)s" % {
-        "mac" : settings.URL_CGI_VALIDA_MAC,
+        "mac": settings.URL_CGI_VALIDA_MAC,
         "temp_path": temp_path
     }
     valid_mac = commands.getoutput(command).strip() == VALID_MAC_RESPONSE
     os.remove(temp_path)
     return VALID_MAC_RESPONSE if valid_mac else RECHAZADO_RESPONSE
 
+
 def _get_order_params(req):
     """Ordenar los parametros recibidos, separados con &"""
-    return '&'.join(['%s=%s' % (k,v) for k,v in cgi.parse_qsl(req.body)])
+    return '&'.join(['%s=%s' % (k, v) for k, v in cgi.parse_qsl(req.body)])
+
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
