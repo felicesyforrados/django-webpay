@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import datetime
+
 from django.test import TestCase
 from django.test.client import Client
 from webpay.models import OrdenCompraWebpay
@@ -72,6 +74,19 @@ class WebpayTest(TestCase):
             self.assertEqual(i, RECHAZADO_RESPONSE)
         orden = OrdenCompraWebpay.objects.all()
         self.assertEqual(orden[0].status, u"MAC Inválido")
+
+    def test_orden_no_existe(self):
+        """Test que se ejecuta cuando la orden de compra no existe o ya fue
+        procesada"""
+        params = "TBK_ORDEN_COMPRA=fyf_1365025480_1mh2&TBK_TIPO_TRANSACCION=TR_NORMAL&TBK_RESPUESTA=0&TBK_MONTO=120&TBK_CODIGO_AUTORIZACION=101996&TBK_FINAL_NUMERO_TARJETA=6623&TBK_FECHA_CONTABLE=0403&TBK_FECHA_TRANSACCION=0403&TBK_HORA_TRANSACCION=191700&TBK_ID_SESION=fyf_1mh1&TBK_ID_TRANSACCION=5025486392&TBK_TIPO_PAGO=VN&TBK_NUMERO_CUOTAS=0&TBK_VCI=TSY&TBK_MAC=1d776"
+        ord_m = OrdenCompraWebpay(
+            orden_compra="fyf_1365025480_1mh2",
+            monto='12000',
+            fecha_transaccion=datetime.datetime.today())
+        ord_m.save()
+        response = self.client.post("/", params, content_type="text/html")
+        for i in response:
+            self.assertEqual(i, RECHAZADO_RESPONSE)
 
     def test_ok(self):
         ord_m = OrdenCompraWebpay(

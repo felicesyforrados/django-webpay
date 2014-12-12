@@ -67,8 +67,11 @@ def compra_webpay(request):
             orden.fecha_contable = fecha_contable
             orden.numero_cuota = numero_cuota
         except OrdenCompraWebpay.DoesNotExist:
-            data = [orden_compra, get_client_ip(req)]
-            pago_defectuoso.send(sender=data)
+            try:
+                data = [orden_compra, get_client_ip(req)]
+                pago_defectuoso.send(sender=data)
+            except Exception, e:
+                logger_webpay.info("Ocurrio algo con la traza de datos que envia Webpay {}".format(e))
             #Comprueba archivo
             logger_webpay.info("Data post {}".format(req.POST))
             mail_admins(
