@@ -6,11 +6,14 @@ import commands
 import tempfile
 import time
 import logging
+
 from django.core.mail import mail_admins
 from datetime import datetime
 from django.conf import settings
 from django.http import HttpResponse
+from django.utils.timezone import get_current_timezone
 from django.views.decorators.csrf import csrf_exempt
+
 from webpay.models import OrdenCompraWebpay
 from webpay.conf import STATUS, VALID_MAC_RESPONSE, ACEPTADO_RESPONSE, RECHAZADO_RESPONSE
 from webpay.signals import pago_defectuoso
@@ -34,6 +37,7 @@ def compra_webpay(request):
     resp = RECHAZADO_RESPONSE
     if request.method == "POST":
         startTime = time.time()  # Revisaremos Tiempo
+        todaytz = get_current_timezone().localize(datetime.today(), is_dst=False)
         req = request
         qs = _get_order_params(req)
         orden_compra = req.POST.get('TBK_ORDEN_COMPRA')
@@ -61,7 +65,7 @@ def compra_webpay(request):
             orden.final_num_tarjeta = final_num_tarjeta
             orden.id_sesion = id_sesion
             orden.codigo_autorizacion = codigo_autorizacion
-            orden.fecha_transaccion = datetime.today()
+            orden.fecha_transaccion = todaytz
             orden.tipo_pago = tipo_pago
             orden.tipo_transaccion = tipo_transaccion
             orden.fecha_contable = fecha_contable
