@@ -5,6 +5,6 @@ except ImportError:
 
 from .views import compra_webpay
 
-urlpatterns = patterns(
+urlpatterns = [
     url(r'^$', compra_webpay, name="comprawebpay"),
-)
+]
