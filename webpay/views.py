@@ -40,21 +40,22 @@ def compra_webpay(request):
         todaytz = get_current_timezone().localize(datetime.today(), is_dst=False)
         req = request
         qs = _get_order_params(req)
-        orden_compra = req.POST.get('TBK_ORDEN_COMPRA')
-        respuesta = req.POST.get('TBK_RESPUESTA')
+        params = _get_params(qs)
+        orden_compra = params.get('TBK_ORDEN_COMPRA')
+        respuesta = params.get('TBK_RESPUESTA')
         try:
             #Divide para tener la cifra correcta desde Webpay
-            monto = int(req.POST.get('TBK_MONTO')) / 100
+            monto = int(params.get('TBK_MONTO')) / 100
         except:
-            monto = req.POST.get("TBK_MONTO")
-        codigo_autorizacion = req.POST.get('TBK_CODIGO_AUTORIZACION')
-        id_transaccion = req.POST.get('TBK_ID_TRANSACCION')
-        final_num_tarjeta = req.POST.get('TBK_FINAL_NUMERO_TARJETA')
-        id_sesion = req.POST.get("TBK_ID_SESION")
-        tipo_pago = req.POST.get("TBK_TIPO_PAGO")
-        tipo_transaccion = req.POST.get("TBK_TIPO_TRANSACCION")
-        fecha_contable = req.POST.get("TBK_FECHA_CONTABLE")
-        numero_cuota = req.POST.get("TBK_NUMERO_CUOTAS")
+            monto = params.get("TBK_MONTO")
+        codigo_autorizacion = params.get('TBK_CODIGO_AUTORIZACION')
+        id_transaccion = params.get('TBK_ID_TRANSACCION')
+        final_num_tarjeta = params.get('TBK_FINAL_NUMERO_TARJETA')
+        id_sesion = params.get("TBK_ID_SESION")
+        tipo_pago = params.get("TBK_TIPO_PAGO")
+        tipo_transaccion = params.get("TBK_TIPO_TRANSACCION")
+        fecha_contable = params.get("TBK_FECHA_CONTABLE")
+        numero_cuota = params.get("TBK_NUMERO_CUOTAS")
         try:
             orden = OrdenCompraWebpay.objects.get(
                 orden_compra=orden_compra,
@@ -99,7 +100,8 @@ def compra_webpay(request):
         orden.respuesta = resp
         orden.save()
         orden.enviar_signals()
-        logger_webpay.info("Request de {} webpay/compra/ duro {} segundos.".format(orden_compra, time.time()-startTime))
+        logger_webpay.info("Request de {} webpay/compra/ duro {} segundos.".format(
+            orden_compra, time.time()-startTime))
         return HttpResponse(resp)
     else:
         return HttpResponse(resp)
@@ -128,7 +130,17 @@ def _get_order_params(req):
     return '&'.join(['%s=%s' % (k, v) for k, v in cgi.parse_qsl(req.body)])
 
 
+def _get_params(body):
+    """Obtener los parametros en base al body existente"""
+    params_dict = {}
+    for param in body.split('&'):
+        param = param.split('=')
+        params_dict[param[0]] = param[1]
+    return params_dict
+
+
 def get_client_ip(request):
+    """Obtener la IP del request"""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
