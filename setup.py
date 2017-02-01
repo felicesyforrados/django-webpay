@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
 version = '2016.11.24-1'
@@ -12,7 +12,7 @@ setup(
     author_email="dev@felicesyforrados.cl",
     url='https://github.com/felicesyforrados/django-webpay',
     license='MIT license',
-    platforms = ['any'],
+    platforms=['any'],
     packages=find_packages(),
     classifiers=[
         "Framework :: Django",
@@ -20,6 +20,6 @@ setup(
         "Programming Language :: Python",
         "Topic :: Utilities",
     ],
-     include_package_data=True,
-     zip_safe=False,
+    include_package_data=True,
+    zip_safe=False,
 )

@@ -3,17 +3,17 @@ Signal conecta tu sistema con la aplicacion desacoplada
 """
 from django.dispatch import Signal
 
-#Pago satisfactorio
+# Pago satisfactorio
 pago_fue_satisfactorio = Signal()
 
-#Respuesta invalida
+# Respuesta invalida
 respuesta_invalida = Signal()
 
-#Monto invalido
+# Monto invalido
 monto_invalido = Signal()
 
-#Mac invalido
+# Mac invalido
 mac_invalido = Signal()
 
-#Pago defectuoso
+# Pago defectuoso
 pago_defectuoso = Signal()

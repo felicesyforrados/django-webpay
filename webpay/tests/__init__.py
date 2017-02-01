@@ -1,1 +1,1 @@
-from test_view_webpay import *
+from test_view_webpay import *  # noqa

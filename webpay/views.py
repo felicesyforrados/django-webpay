@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
 import cgi
@@ -44,7 +44,7 @@ def compra_webpay(request):
         orden_compra = params.get('TBK_ORDEN_COMPRA')
         respuesta = params.get('TBK_RESPUESTA')
         try:
-            #Divide para tener la cifra correcta desde Webpay
+            # Divide para tener la cifra correcta desde Webpay
             monto = int(params.get('TBK_MONTO')) / 100
         except:
             monto = params.get("TBK_MONTO")
@@ -77,7 +77,7 @@ def compra_webpay(request):
                 pago_defectuoso.send(sender=data)
             except Exception, e:
                 logger_webpay.info("Ocurrio algo con la traza de datos que envia Webpay {}".format(e))
-            #Comprueba archivo
+            # Comprueba archivo
             logger_webpay.info("Data post {}".format(req.POST))
             mail_admins(
                 subject="Django webpay views",
@@ -86,7 +86,7 @@ def compra_webpay(request):
             return HttpResponse(resp)
         if respuesta == "0":
             if monto == int(orden.monto):
-                #Valida MAC
+                # Valida MAC
                 if valida_mac(qs) == VALID_MAC_RESPONSE:
                     orden.status = STATUS["PAGADO"]
                     resp = ACEPTADO_RESPONSE
@@ -101,7 +101,7 @@ def compra_webpay(request):
         orden.save()
         orden.enviar_signals()
         logger_webpay.info("Request de {} webpay/compra/ duro {} segundos.".format(
-            orden_compra, time.time()-startTime))
+            orden_compra, time.time() - startTime))
         return HttpResponse(resp)
     else:
         return HttpResponse(resp)

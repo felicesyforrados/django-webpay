@@ -1,8 +1,9 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- codding: utf-8 -*-
 from django.db import models
 from webpay.signals import pago_fue_satisfactorio, respuesta_invalida, monto_invalido, mac_invalido
 from webpay.conf import STATUS
+
 
 class OrdenCompraWebpay(models.Model):
     orden_compra = models.CharField(max_length=42, unique=True)
@@ -25,19 +26,21 @@ class OrdenCompraWebpay(models.Model):
         verbose_name = "Orden de compra WebPay"
 
     def enviar_signals(self):
-        """Eniar un Signal para la app a la que se conecto y pueda
-        grabar en su propio Modelo"""
-        #Pagado
+        """
+        Enviar un Signal para la app a la que se conecto y pueda
+        grabar en su propio Modelo
+        """
+        # Pagado
         if self.status == STATUS["PAGADO"]:
             pago_fue_satisfactorio.send(sender=self)
         elif self.status == STATUS['RESP_INVALIDO']:
-            #Respuesta invalida
+            # Respuesta invalida
             respuesta_invalida.send(sender=self)
         elif self.status == STATUS["MONTO_INVALIDO"]:
-            #Monto invalido
+            # Monto invalido
             monto_invalido.send(sender=self)
         elif self.status == STATUS["MAC_INVALIDO"]:
-            #Mac invalido
+            # Mac invalido
             mac_invalido.send(sender=self)
 
     def __unicode__(self):

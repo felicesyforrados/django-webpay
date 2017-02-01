@@ -1,14 +1,14 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-#Response
+# Response
 ACEPTADO_RESPONSE = 'ACEPTADO'
 RECHAZADO_RESPONSE = 'RECHAZADO'
 VALID_MAC_RESPONSE = 'CORRECTO'
 
-#Codigos de respuesta
+# Codigos de respuesta
 TRANSACTION_CODES = {
-    '0':('Transaccion aprobada.'),
-    '-1':('Rechazo de transaccion.'),
+    '0': ('Transaccion aprobada.'),
+    '-1': ('Rechazo de transaccion.'),
     '-2': ('Transaccion debe reintentarse.'),
     '-3': ('Error en transaccion.'),
     '-4': ('Rechazo de transaccion.'),
@@ -17,7 +17,7 @@ TRANSACTION_CODES = {
     '-7': ('Excede limite diario de transaccion.'),
     '-8': ('Rubro no autorizado.')}
 
-#Estatus
+# Estatus
 STATUS = {
     "PAGADO": "Pagado",
     "MONTO_INVALIDO": "Monto Inválido",

@@ -1,15 +1,11 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
 import datetime
 
 from django.test import TestCase
 from django.test import Client
 from webpay.models import OrdenCompraWebpay
 from webpay.conf import RECHAZADO_RESPONSE, VALID_MAC_RESPONSE, ACEPTADO_RESPONSE
-from webpay.signals import (
-    pago_fue_satisfactorio, respuesta_invalida, monto_invalido, mac_invalido,
-    pago_defectuoso)
 from webpay.views import valida_mac
 
 
@@ -24,7 +20,7 @@ class WebpayTest(TestCase):
         self.assertEqual(response.content, RECHAZADO_RESPONSE)
 
     def test_respuesta(self):
-        #Crear Archivo Respuesta != 0
+        # Crear Archivo Respuesta != 0
         params = "TBK_ORDEN_COMPRA=fyf_1365025480_1mh1&TBK_TIPO_TRANSACCION=TR_NORMAL&TBK_RESPUESTA=-1&TBK_MONTO=120&TBK_CODIGO_AUTORIZACION=101996&TBK_FINAL_NUMERO_TARJETA=6623&TBK_FECHA_CONTABLE=0403&TBK_FECHA_TRANSACCION=0403&TBK_HORA_TRANSACCION=191700&TBK_ID_SESION=fyf_1mh1&TBK_ID_TRANSACCION=5025486392&TBK_TIPO_PAGO=VN&TBK_NUMERO_CUOTAS=0&TBK_VCI=TSY&TBK_MAC=1d776"
         ord_m = OrdenCompraWebpay(
             orden_compra="fyf_1365025480_1mh1",
@@ -37,7 +33,7 @@ class WebpayTest(TestCase):
         self.assertEqual(orden[0].status, u"Inválido")
 
     def test_monto(self):
-        #Validar monto diferente
+        # Validar monto diferente
         params = "TBK_ORDEN_COMPRA=fyf_1365025480_1mh1&TBK_TIPO_TRANSACCION=TR_NORMAL&TBK_RESPUESTA=0&TBK_MONTO=120&TBK_CODIGO_AUTORIZACION=101996&TBK_FINAL_NUMERO_TARJETA=6623&TBK_FECHA_CONTABLE=0403&TBK_FECHA_TRANSACCION=0403&TBK_HORA_TRANSACCION=191700&TBK_ID_SESION=fyf_1mh1&TBK_ID_TRANSACCION=5025486392&TBK_TIPO_PAGO=VN&TBK_NUMERO_CUOTAS=0&TBK_VCI=TSY&TBK_MAC=1d776"
         ord_m = OrdenCompraWebpay(
             orden_compra="fyf_1365025480_1mh1",
@@ -48,7 +44,7 @@ class WebpayTest(TestCase):
             self.assertEqual(i, RECHAZADO_RESPONSE)
         orden = OrdenCompraWebpay.objects.all()
         self.assertEqual(orden[0].status, u"Monto Inválido")
-        #Monto como string
+        # Monto como string
         params = "TBK_ORDEN_COMPRA=fyf_1365025481_1mh1&TBK_TIPO_TRANSACCION=TR_NORMAL&TBK_RESPUESTA=0&TBK_MONTO=1d20&TBK_CODIGO_AUTORIZACION=101996&TBK_FINAL_NUMERO_TARJETA=6623&TBK_FECHA_CONTABLE=0403&TBK_FECHA_TRANSACCION=0403&TBK_HORA_TRANSACCION=191700&TBK_ID_SESION=fyf_1mh1&TBK_ID_TRANSACCION=5025486392&TBK_TIPO_PAGO=VN&TBK_NUMERO_CUOTAS=0&TBK_VCI=TSY&TBK_MAC=1d776"
         ord_m = OrdenCompraWebpay(
             orden_compra="fyf_1365025481_1mh1",
@@ -61,11 +57,11 @@ class WebpayTest(TestCase):
         self.assertEqual(orden[0].status, u"Monto Inválido")
 
     def test_function_mac(self):
-        #Validar funcion MAC
+        # Validar funcion MAC
         self.assertEqual(valida_mac(self.WEBPAY_PARAMS), VALID_MAC_RESPONSE)
 
     def test_mac(self):
-        #Validar MAC invalido
+        # Validar MAC invalido
         params = "TBK_ORDEN_COMPRA=fyf_1365025480_1mh1&TBK_TIPO_TRANSACCION=TR_NORMAL&TBK_RESPUESTA=0&TBK_MONTO=1200000&TBK_CODIGO_AUTORIZACION=101996&TBK_FINAL_NUMERO_TARJETA=6623&TBK_FECHA_CONTABLE=0403&TBK_FECHA_TRANSACCION=0403&TBK_HORA_TRANSACCION=191700&TBK_ID_SESION=fyf_1mh1&TBK_ID_TRANSACCION=5025486392&TBK_TIPO_PAGO=VN&TBK_NUMERO_CUOTAS=0&TBK_VCI=TSY&TBK_MAC=1d776"
         ord_m = OrdenCompraWebpay(
             orden_compra="fyf_1365025480_1mh1",
@@ -78,8 +74,10 @@ class WebpayTest(TestCase):
         self.assertEqual(orden[0].status, u"MAC Inválido")
 
     def test_orden_no_existe(self):
-        """Test que se ejecuta cuando la orden de compra no existe o ya fue
-        procesada"""
+        """
+        Test que se ejecuta cuando la orden de compra no existe o ya fue
+        procesada
+        """
         params = "TBK_ORDEN_COMPRA=fyf_1365025480_1mh2&TBK_TIPO_TRANSACCION=TR_NORMAL&TBK_RESPUESTA=0&TBK_MONTO=120&TBK_CODIGO_AUTORIZACION=101996&TBK_FINAL_NUMERO_TARJETA=6623&TBK_FECHA_CONTABLE=0403&TBK_FECHA_TRANSACCION=0403&TBK_HORA_TRANSACCION=191700&TBK_ID_SESION=fyf_1mh1&TBK_ID_TRANSACCION=5025486392&TBK_TIPO_PAGO=VN&TBK_NUMERO_CUOTAS=0&TBK_VCI=TSY&TBK_MAC=1d776"
         ord_m = OrdenCompraWebpay(
             orden_compra="fyf_1365025480_1mh2",

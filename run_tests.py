@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
+# !/usr/bin/env python
+# -*- coding:utf-8 -*-
 import django
 import os
 import sys
@@ -11,8 +11,9 @@ settings.configure(
     URL_CGI_VALIDA_MAC="webpay/tests/test_files/tbk_check_mac.cgi",
     DATABASES={
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',}
-        },
+            'ENGINE': 'django.db.backends.sqlite3',
+        }
+    },
     ROOT_URLCONF='webpay.urls',
     INSTALLED_APPS=(
         'django.contrib.auth',
@@ -20,7 +21,8 @@ settings.configure(
         'django.contrib.sessions',
         'django.contrib.admin',
         'webpay',
-        'webpay.tests'),
+        'webpay.tests'
+    ),
     LOGGER_WEBPAY='logger_webpay',
     USE_TZ=True)
 
@@ -36,4 +38,3 @@ test_runner = DjangoTestSuiteRunner(verbosity=1)
 failures = test_runner.run_tests(['webpay', ])
 if failures:
     sys.exit(failures)
-
