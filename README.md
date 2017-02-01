@@ -1,6 +1,6 @@
 Django-webpay
 =============
-.. image:: https://travis-ci.org/felicesyforrados/django-webpay.svg?branch=master :target https://travis-ci.org/felicesyforrados/django-webpay
+[![Travis CI](https://travis-ci.org/felicesyforrados/django-webpay.svg?branch=master)](https://travis-ci.org/felicesyforrados/django-webpay)
 
 Aplicacion de integracion entre Django y Webpay. Es necesario tener en cuenta
 las recomendaciones del manual para entener el procedimiento que se requiere.
@@ -155,7 +155,7 @@ Links
 
 1. [Transbank KCC](https://www.transbank.cl/public/16_productos_y_servicios.html)
 
-Contácto
+Contacto
 ========
 
 dev@felicesyforrados.cl
