@@ -155,7 +155,7 @@ Links
 
 1. [Transbank KCC](https://www.transbank.cl/public/16_productos_y_servicios.html)
 
-Contácto
+Contacto
 ========
 
 dev@felicesyforrados.cl
