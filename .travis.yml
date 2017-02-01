@@ -4,5 +4,8 @@ env:
     - DJANGO_VERSION=1.8
 install:
     - pip install -q Django==$DJANGO_VERSION
+    - pip install flake8
     - pip install -r requirements.txt
-script: python run_tests.py
+script:
+    - flake8 --ignore=E501 --exclude=webpay/migrations/
+    - python run_tests.py
