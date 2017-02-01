@@ -1,6 +1,7 @@
 Django-webpay
 =============
 [![Travis CI](https://travis-ci.org/felicesyforrados/django-webpay.svg?branch=master)](https://travis-ci.org/felicesyforrados/django-webpay)
+[![Coverage Status](https://coveralls.io/repos/github/felicesyforrados/django-webpay/badge.svg?branch=master)](https://coveralls.io/github/felicesyforrados/django-webpay?branch=master)
 
 Aplicacion de integracion entre Django y Webpay. Es necesario tener en cuenta
 las recomendaciones del manual para entener el procedimiento que se requiere.
