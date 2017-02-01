@@ -29,10 +29,11 @@ try:
     from django.test.simple import DjangoTestSuiteRunner
 except ImportError:
     # Django >= 1.8
-    django.setup()
     from django.test.runner import DiscoverRunner as DjangoTestSuiteRunner
 
+django.setup()
 test_runner = DjangoTestSuiteRunner(verbosity=1)
 failures = test_runner.run_tests(['webpay', ])
 if failures:
     sys.exit(failures)
+
