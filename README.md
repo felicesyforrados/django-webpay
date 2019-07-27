@@ -1,3 +1,5 @@
+:no_entry: [DEPRECATED] El uso de KCC (archivos CGI) ha quedado obsoleto por parte de Transbank.
+
 Django-webpay
 =============
 [![Travis CI](https://travis-ci.org/felicesyforrados/django-webpay.svg?branch=master)](https://travis-ci.org/felicesyforrados/django-webpay)
